@@ -213,6 +213,34 @@
             .product-item img { height: 140px; }
             .product-item h4 { font-size: 1rem; }
         }
+
+        /* --- SOSYAL MEDYA İKONLARI --- */
+        .social-links {
+            margin-bottom: 20px; /* İkonlar ile yazı arasındaki boşluk */
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            margin: 0 8px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1); /* Hafif şeffaf arka plan */
+            border-radius: 50%; /* Yuvarlak yapar */
+            font-size: 18px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Üzerine gelince turuncu olsun */
+        .social-links a:hover {
+            background: var(--primary); 
+            color: white;
+            transform: translateY(-5px); /* Hafif yukarı zıplama efekti */
+            box-shadow: 0 5px 15px rgba(255, 111, 0, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -463,10 +491,18 @@
                 <p style="color:#888; margin-bottom:10px;"><i class="fas fa-phone" style="color:var(--primary); margin-right:10px;"></i> +90 545 214 19 96</p>
                 <p style="color:#888;"><i class="fas fa-envelope" style="color:var(--primary); margin-right:10px;"></i> karpa@kar-pa.com.tr</p>
                 <div class="map-container">
-                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12273.80416973682!2d30.6558661!3d39.7828756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc3e66042105e9%3A0x9599d14619726056!2sEski%C5%9Fehir%20Organize%20Sanayi%20B%C3%B6lgesi%20M%C3%BCd%C3%BCrl%C3%BC%C4%9F%C3%BC!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                     <iframe 
+    src="https://maps.google.com/maps?q=Karpa%20Seramik%20Eski%C5%9Fehir&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+    width="100%" 
+    height="100%" 
+    style="border:0;" 
+    allowfullscreen="" 
+    loading="lazy" 
+    referrerpolicy="no-referrer-when-downgrade">
+</iframe>
                 </div>
             </div>
-            <form class="contact-form">
+            <form class="contact-form" onsubmit="gonderildi(event)">
                 <h3 style="color:white; margin-bottom:20px;">Fiyat Teklifi Alın</h3>
                 <input type="text" placeholder="Adınız Soyadınız">
                 <input type="tel" placeholder="Telefon Numaranız">
@@ -477,7 +513,13 @@
         </div>
     </section>
 
-    <footer>
+   <footer>
+        <div class="social-links">
+            <a href="https://instagram.com/karpaseramik" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com/karpashowroom" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            
+            </div>
+
         <p>© 2025 Karpa Seramik Eskişehir. Tüm hakları saklıdır.</p>
     </footer>
 
@@ -528,7 +570,33 @@
             const activeItem = document.querySelector('.nav-link.active');
             if(activeItem) setTimeout(() => indicator(activeItem), 100);
         });
+
+        function gonderildi(e) {
+    e.preventDefault(); // Sayfanın yenilenmesini engeller
+    
+    // Butonu bul ve metnini değiştir
+    const btn = document.querySelector('.btn-submit');
+    const originalText = btn.innerText;
+    
+    btn.innerText = "Gönderiliyor...";
+    btn.style.opacity = "0.7";
+    
+    // 1.5 saniye sonra "Gitti" mesajı ver (Simülasyon)
+    setTimeout(() => {
+        btn.innerText = "Mesajınız İletildi! ✓";
+        btn.style.backgroundColor = "#2ecc71"; // Yeşil renk
+        
+        // Formu temizle
+        document.querySelector('.contact-form').reset();
+        
+        // 3 saniye sonra butonu eski haline getir
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = ""; // Rengi sıfırla
+            btn.style.opacity = "1";
+        }, 3000);
+    }, 1500);
+}
     </script>
 </body>
 </html>
-
