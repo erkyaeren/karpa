@@ -3,282 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="karpalogo.jpeg" type="image/png">
     <title>Karpa Seramik - Eskişehir Şubesi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* --- GENEL AYARLAR & RENK PALETİ --- */
+        /* --- GENEL AYARLAR --- */
         :root {
-            --primary: #FF6F00; /* Koyu Turuncu */
+            --primary: #FF6F00;
             --primary-glow: rgba(255, 111, 0, 0.5);
-            --dark-bg: #0a0a0a;
-            --card-bg: #141414; 
+            --card-bg: rgba(20, 20, 20, 0.75); 
             --text-light: #ffffff;
             --text-gray: #a0a0a0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
 
         body {
-            background-color: var(--dark-bg);
+            background-color: transparent; 
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ARKA PLAN */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: url('https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxoybJTAkhaZIc8IYVasKipXF3n9Xx_UToB8HROpL25hREJoHQXFOvUOBkAg5Kc_deM8qBBAmi7z6KK6Gu13G8677ckafTKn37oM_hlENq221nYMyyvmAXQSQ2-QLVaiAleEW5v=s1360-w1360-h1020-rw') no-repeat center center / cover;
+            filter: blur(2px); transform: scale(1.02);
+        }
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: rgba(10, 10, 10, 0.85); 
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- NAVBAR (HEADER) --- */
+        /* --- NAVBAR --- */
         header {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 1200px;
-            padding: 10px 30px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 40px;
-            
-            /* Glassmorphism */
-            background: rgba(20, 20, 20, 0.65);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
+            width: 95%; max-width: 1200px; padding: 10px 30px; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            border-radius: 40px; background: rgba(20, 20, 20, 0.65);
+            backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--text-light);
-            letter-spacing: 1px;
-            z-index: 10;
-            display: flex; align-items: center;
-        }
+        .logo { font-size: 24px; font-weight: 800; color: var(--text-light); display: flex; align-items: center; }
         .logo span { color: var(--primary); font-size: 16px; margin-left: 10px; border-left: 2px solid #333; padding-left: 10px; }
 
-        /* --- AKIŞKAN MENÜ (NAVBAR) --- */
-        .navbar {
-            position: relative;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 30px;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-        }
+        .navbar { position: relative; background: rgba(255, 255, 255, 0.02); border-radius: 30px; padding: 4px; display: flex; align-items: center; }
+        .navbar ul { display: flex; position: relative; z-index: 2; }
+        .navbar ul li a { display: block; padding: 10px 20px; color: var(--text-gray); font-weight: 500; font-size: 14px; transition: color 0.4s ease; position: relative; z-index: 5; text-align: center; }
+        .navbar ul li a:hover, .navbar ul li a.active { color: #fff; }
 
-        .navbar ul {
-            display: flex;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            z-index: 2;
-        }
-
-        .navbar ul li { position: relative; margin: 0 2px; }
-
-        .navbar ul li a {
-            display: block;
-            padding: 10px 20px;
-            color: var(--text-gray);
-            font-weight: 500;
-            font-size: 14px;
-            transition: color 0.4s ease;
-            position: relative;
-            z-index: 5;
-            text-align: center;
-        }
-
-        .navbar ul li a:hover,
-        .navbar ul li a.active { color: #fff; }
-
-        /* --- GEZEN MARKER (TURUNCU KUTUCUK) --- */
         #marker {
-            position: absolute;
-            left: 0; top: 4px;
-            height: calc(100% - 8px);
-            width: 0;
-            border-radius: 25px;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            z-index: 1;
-            pointer-events: none;
+            position: absolute; left: 0; top: 4px; height: calc(100% - 8px); width: 0; border-radius: 25px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); z-index: 1; pointer-events: none;
             background: linear-gradient(135deg, rgba(255, 111, 0, 0.2), rgba(255, 111, 0, 0.4));
-            box-shadow: inset 0 0 10px rgba(255, 130, 0, 0.3), 0 5px 20px rgba(255, 111, 0, 0.3);
-            border: 1px solid rgba(255, 160, 100, 0.15);
-            backdrop-filter: blur(4px);
+            box-shadow: inset 0 0 10px rgba(255, 130, 0, 0.3); border: 1px solid rgba(255, 160, 100, 0.15);
         }
 
-        /* --- ARAMA ÇUBUĞU --- */
-        .search-container {
-            position: relative;
-            margin-left: 20px;
-        }
-
-        .search-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 10px 15px 10px 45px;
-            color: white;
-            font-size: 14px;
-            width: 200px;
-            transition: 0.3s;
-            outline: none;
-        }
-
-        .search-box:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-            width: 240px;
-            box-shadow: 0 0 15px rgba(255, 111, 0, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-gray);
-            pointer-events: none;
-            transition: 0.3s;
-        }
-
-        .search-box:focus + .search-icon { color: var(--primary); }
+        .search-container { position: relative; margin-left: 20px; }
+        .search-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 10px 15px 10px 45px; color: white; width: 200px; outline: none; transition:0.3s;}
+        .search-box:focus { background: rgba(255, 255, 255, 0.1); border-color: var(--primary); width: 240px; }
+        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-gray); pointer-events: none; }
 
         /* --- HERO --- */
         .hero {
             height: 100vh;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), var(--dark-bg)), url('https://images.unsplash.com/photo-1620626012053-93f2bc723386?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(10,10,10,0.9)), url('https://images.unsplash.com/photo-1620626012053-93f2bc723386?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px;
         }
         .hero h1 { font-size: 4rem; font-weight: 700; margin-bottom: 20px; }
         .hero h1 span { color: var(--primary); }
         .hero p { color: var(--text-gray); max-width: 600px; font-size: 1.1rem; }
 
-        /* --- GENEL BÖLÜM STİLLERİ --- */
+        /* --- BÖLÜM STİLLERİ --- */
         .section-padding { padding: 100px 10%; }
         .section-title { text-align: center; margin-bottom: 60px; }
         .section-title h2 { font-size: 2.5rem; color: white; }
         .section-title h2 span { color: var(--primary); }
         .section-title p { color: #777; margin-top: 10px; }
 
-        /* KARTLAR */
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        /* --- KOLEKSİYON SİSTEMİ --- */
+        .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 40px; }
+        
         .category-card {
             background: var(--card-bg);
-            padding: 40px; border-radius: 24px;
+            padding: 30px; border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.05);
-            text-align: center; transition: 0.4s;
-        }
-        .category-card:hover { border-color: var(--primary); transform: translateY(-10px); }
-        .category-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
-        .category-card h3 { color: white; margin-bottom: 10px; }
-        .category-card p { color: #888; font-size: 0.9rem; }
-
-        /* REFERANSLAR & LOGOLAR (GÜNCELLENDİ) */
-        .brands-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap: 20px; 
-            margin-top: 20px; 
+            text-align: center; transition: 0.4s; cursor: pointer;
+            backdrop-filter: blur(10px);
         }
         
-        .brand-box {
-            background: #7f7f7f;
-            height: 100px;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            border-radius: 15px; 
+        .category-card:hover, .category-card.active-cat { 
+            border-color: var(--primary); transform: translateY(-5px); 
+            background: rgba(255, 111, 0, 0.1);
+        }
+        .category-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
+        .category-card h3 { color: white; font-size: 1.2rem; }
+
+        /* Ürünler Alanı */
+        .products-display-area { min-height: 200px; }
+        
+        .product-group {
+            display: none; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Daha fazla sığsın diye küçülttüm */
+            gap: 20px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .product-group.show { display: grid; }
+
+        .product-item {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 15px; padding: 15px;
             border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-            overflow: hidden;
-            padding: 15px; /* Logolar kenara yapışmasın */
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .product-item:hover { border-color: #555; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .product-item img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; transition: 0.5s; }
+        .product-item:hover img { transform: scale(1.05); }
+        .product-item h4 { color: white; margin-bottom: 5px; font-size: 1.1rem; }
+        .product-item p { color: #888; font-size: 0.9rem; }
+        
+        /* Fiyat etiketi benzeri stil */
+        .badge {
+            display: inline-block; padding: 4px 10px; background: rgba(255, 111, 0, 0.2); 
+            color: var(--primary); border-radius: 5px; font-size: 0.8rem; margin-top: 5px; font-weight: bold;
         }
 
-        /* Logo Resimleri için Stil */
-        .brand-box img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: grayscale(100%) opacity(0.6); /* Başlangıçta gri ve soluk */
-            transition: all 0.4s ease;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .brand-box:hover { 
-            border-color: var(--primary); 
-            background: #222; 
-            transform: scale(1.05); 
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        /* --- DİĞER KISIMLAR --- */
+        .brands-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 20px; }
+        .brand-box {
+            background: rgb(127, 127, 127); height: 100px; display: flex; justify-content: center; 
+            align-items: center; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); padding: 15px; backdrop-filter: blur(5px); transition: 0.3s;
         }
+        .brand-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(100%) opacity(0.6); transition: 0.4s; }
+        .brand-box:hover { border-color: var(--primary); background: rgba(34, 34, 34, 0.8); transform: scale(1.05); }
+        .brand-box:hover img { filter: grayscale(0%) opacity(1); transform: scale(1.1); }
 
-        .brand-box:hover img {
-            filter: grayscale(0%) opacity(1); /* Hover olunca renkli ve canlı */
-            transform: scale(1.1);
-        }
-
-        /* HAKKIMIZDA */
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
         .about-img img { width: 100%; border-radius: 20px; filter: grayscale(100%); transition: 0.5s; }
         .about-img img:hover { filter: grayscale(0); }
-        .about-text h3 { font-size: 2rem; color: white; margin-bottom: 15px; }
-        .about-text p { color: #999; margin-bottom: 15px; }
-
-        /* İLETİŞİM */
+        
         .contact-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 50px; }
         .contact-form input, .contact-form textarea {
             width: 100%; padding: 15px; margin-bottom: 15px;
-            background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; outline:none;
+            background: rgba(26, 26, 26, 0.8); border: 1px solid #333; color: white; border-radius: 12px; outline:none; backdrop-filter: blur(5px);
         }
-        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--primary); }
+        .contact-form input:focus { border-color: var(--primary); }
         .btn-submit { background: var(--primary); width: 100%; padding: 15px; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-submit:hover { background: #e65100; }
-
-        /* GOOGLE MAPS */
-        .map-container {
-            width: 100%; height: 250px; background: #222; margin-top: 30px;
-            border-radius: 15px; overflow: hidden; border: 1px solid #333;
-        }
+        
+        .map-container { width: 100%; height: 250px; background: #222; margin-top: 30px; border-radius: 15px; overflow: hidden; }
         .map-container iframe { width: 100%; height: 100%; border: 0; filter: grayscale(100%) invert(92%) contrast(83%); }
 
-        footer { background: black; padding: 40px; text-align: center; color: #555; border-top: 1px solid #222; margin-top: 50px; }
+        footer { background: rgba(0, 0, 0, 0.9); padding: 40px; text-align: center; color: #555; border-top: 1px solid #222; margin-top: 50px; backdrop-filter: blur(10px); }
 
-        /* MOBILE */
+        /* --- MOBILE UYUMLULUK AYARLARI (KRİTİK GÜNCELLEME) --- */
         @media (max-width: 900px) {
-            header { width: 95%; top: 10px; padding: 15px; flex-direction: column; gap: 10px; border-radius: 20px; }
-            .navbar { display: none; }
-            .search-container { width: 100%; margin: 0; }
-            .search-box { width: 100%; }
-            .search-box:focus { width: 100%; }
+            header { 
+                width: 100%; 
+                top: 0; 
+                padding: 10px; 
+                flex-direction: column; 
+                gap: 15px; 
+                border-radius: 0;
+                background: rgba(20, 20, 20, 0.95); /* Mobilde arka planı koyulaştırdım */
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .logo { font-size: 22px; }
+
+            /* Menü Kaybolmasın, Yan Yana Kaydırılabilir Olsun */
+            .navbar { 
+                display: flex; 
+                width: 100%; 
+                overflow-x: auto; /* Yana kaydırma açıldı */
+                padding-bottom: 5px; 
+                justify-content: flex-start;
+                background: transparent;
+            }
+            .navbar::-webkit-scrollbar { display: none; } /* Scroll çubuğunu gizle */
+
+            .navbar ul { padding: 0 10px; }
+            .navbar ul li a { padding: 8px 15px; font-size: 13px; }
+
+            /* Arama kutusunu mobilde gizle (yer kaplamasın) */
+            .search-container { display: none; }
+
+            /* Yazı boyutlarını ve boşlukları küçült */
             .hero h1 { font-size: 2.5rem; }
+            .section-padding { padding: 60px 5%; }
+            
+            .category-grid { grid-template-columns: 1fr; } /* Kategoriler alt alta */
             .about-content, .contact-container { grid-template-columns: 1fr; }
+            
+            /* Ürünler mobilde 2'li olsun, çok büyük olmasın */
+            .product-group { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .product-item img { height: 140px; }
+            .product-item h4 { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <img src="karpalogo.jpeg" width="120" style="border-radius: 5px;">
-        <div class="logo"><span>ESKİŞEHİR</span></div>
+        <img src="karpalogo.jpeg" width="120" >
+        <div class="logo" style="font-size: 30px;"><span>ESKİŞEHİR</span></div>
         
         <nav class="navbar">
             <div id="marker"></div>
@@ -290,7 +229,6 @@
                 <li><a href="#iletisim" class="nav-link">İletişim</a></li>
             </ul>
         </nav>
-
         <div class="search-container">
             <input type="text" class="search-box" placeholder="Ürün ara...">
             <i class="fas fa-search search-icon"></i>
@@ -302,32 +240,185 @@
         <p>Eskişehir'in en kapsamlı toptan ve perakende seramik mağazası.</p>
     </section>
 
-    <section id="koleksiyon" class="section-padding" style="background: #0f0f0f;">
+    <section id="koleksiyon" class="section-padding" style="background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);">
         <div class="section-title">
             <h2>Ürün <span>Gruplarımız</span></h2>
-            <p>Eviniz için en iyisi.</p>
+            <p>Detaylı ürünleri görmek için kategorilere tıklayın.</p>
         </div>
+
         <div class="category-grid">
-            <div class="category-card">
-                <i class="fas fa-layer-group"></i>
-                <h3>Seramik & Granit</h3>
-                <p>Modern dokular, büyük ebatlar.</p>
-            </div>
-            <div class="category-card">
-                <i class="fas fa-sink"></i>
-                <h3>Vitrifiye</h3>
-                <p>Lavabo ve klozet sistemleri.</p>
-            </div>
-            <div class="category-card">
-                <i class="fas fa-faucet"></i>
-                <h3>Armatür</h3>
-                <p>Tasarruflu batarya sistemleri.</p>
-            </div>
-            <div class="category-card">
+            <div class="category-card" onclick="openCategory('yapi', this)">
                 <i class="fas fa-tools"></i>
-                <h3>Yapı Kimyasalları</h3>
-                <p>Güçlü yapıştırıcı ve derz dolgular.</p>
+                <h3>Yapı Malzemeleri</h3>
+                <p>İnşaat, yalıtım ve kimyasallar.</p>
             </div>
+            <div class="category-card" onclick="openCategory('banyo', this)">
+                <i class="fas fa-bath"></i>
+                <h3>Banyo & Mutfak</h3>
+                <p>Vitrifiye, armatür ve duş sistemleri.</p>
+            </div>
+            <div class="category-card" onclick="openCategory('seramik', this)">
+                <i class="fas fa-layer-group"></i>
+                <h3>Seramik</h3>
+                <p>Zemin, duvar ve dekoratif seramikler.</p>
+            </div>
+        </div>
+
+        <div class="products-display-area">
+            
+            <div id="yapi" class="product-group">
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=400&q=80" alt="Derz">
+                    <h4>Derz Dolgu</h4>
+                    <p>Çatlamaz, su geçirmez.</p>
+                    <span class="badge">Stokta</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=400&q=80" alt="Yapıştırıcı">
+                    <h4>Seramik Yapıştırıcı</h4>
+                    <p>C2TE Sınıfı Güçlü Tutuş</p>
+                    <span class="badge">Profesyonel</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=400&q=80" alt="Yalıtım">
+                    <h4>Su Yalıtımı</h4>
+                    <p>Tam İzolasyon Çözümleri</p>
+                    <span class="badge">Su Bazlı</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80" alt="Tamir">
+                    <h4>Tamir Harcı</h4>
+                    <p>Yüksek mukavemetli.</p>
+                    <span class="badge">Hızlı Donan</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1599694619087-013143c7b895?auto=format&fit=crop&w=400&q=80" alt="Silikon">
+                    <h4>Silikon Mastik</h4>
+                    <p>Küf tutmaz antibakteriyel.</p>
+                    <span class="badge">Çok Amaçlı</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=400&q=80" alt="Astar">
+                    <h4>Zemin Astarı</h4>
+                    <p>Yapışma artırıcı astar.</p>
+                    <span class="badge">İç/Dış Cephe</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1625834317364-b6a836dd1e92?auto=format&fit=crop&w=400&q=80" alt="Şap">
+                    <h4>Tesviye Şapı</h4>
+                    <p>Kendiliğinden yayılan.</p>
+                    <span class="badge">Pürüzsüz</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&w=400&q=80" alt="Köpük">
+                    <h4>Mantolama Köpüğü</h4>
+                    <p>Isı yalıtım levhası.</p>
+                    <span class="badge">Isı Yalıtım</span>
+                </div>
+            </div>
+
+            <div id="banyo" class="product-group">
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80" alt="Lavabo">
+                    <h4>Çanak Lavabo</h4>
+                    <p>Tezgâh üstü modern seri.</p>
+                    <span class="badge">Yeni Sezon</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&w=400&q=80" alt="Batarya">
+                    <h4>Siyah Batarya</h4>
+                    <p>Mat siyah, leke tutmaz.</p>
+                    <span class="badge">Tasarruf</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=400&q=80" alt="Klozet">
+                    <h4>Asma Klozet</h4>
+                    <p>Kanalsız (Rimless) temizlik.</p>
+                    <span class="badge">Hijyenik</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1620626012053-93f2bc723386?auto=format&fit=crop&w=400&q=80" alt="Duşakabin">
+                    <h4>Duşakabin</h4>
+                    <p>Temperli cam, profil seçenekli.</p>
+                    <span class="badge">Ölçüye Özel</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=400&q=80" alt="Mutfak Eviyesi">
+                    <h4>Granit Eviye</h4>
+                    <p>Çizilmeye dayanıklı yüzey.</p>
+                    <span class="badge">Dayanıklı</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=400&q=80" alt="Dolap">
+                    <h4>Banyo Dolabı</h4>
+                    <p>MDF Lam, suya dayanıklı.</p>
+                    <span class="badge">Ahşap/Beyaz</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1585128719715-46776b56a0d1?auto=format&fit=crop&w=400&q=80" alt="Havlu">
+                    <h4>Havlu Radyatör</h4>
+                    <p>Krom ve antrasit seçenekler.</p>
+                    <span class="badge">Isıtma</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1618219944342-824e40a13285?auto=format&fit=crop&w=400&q=80" alt="Ayna">
+                    <h4>Ledli Ayna</h4>
+                    <p>Dokunmatik sensörlü.</p>
+                    <span class="badge">Aydınlatma</span>
+                </div>
+            </div>
+
+            <div id="seramik" class="product-group">
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=400&q=80" alt="60x120">
+                    <h4>60x120 Granit</h4>
+                    <p>Calacatta Mermer Deseni.</p>
+                    <span class="badge">Parlak</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=400&q=80" alt="Ahşap">
+                    <h4>Parke Görünümlü</h4>
+                    <p>Ahşap sıcaklığı, seramik sağlamlığı.</p>
+                    <span class="badge">Mat</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" alt="Dekor">
+                    <h4>Dekoratif Duvar</h4>
+                    <p>3D Desenli Banyo Duvarı</p>
+                    <span class="badge">Rölyefli</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1615971677499-54678dd53f08?auto=format&fit=crop&w=400&q=80" alt="Antrasit">
+                    <h4>Beton Serisi</h4>
+                    <p>Endüstriyel gri tonlar.</p>
+                    <span class="badge">Modern</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1596230529625-7ee541366572?auto=format&fit=crop&w=400&q=80" alt="Tezgah">
+                    <h4>Tezgah Arası</h4>
+                    <p>Küçük ebatlı metro seramik.</p>
+                    <span class="badge">Mutfak</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=400&q=80" alt="Dış Cephe">
+                    <h4>Dış Cephe</h4>
+                    <p>Dona dayanıklı porselen.</p>
+                    <span class="badge">Dış Mekan</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1574738532395-5dbce292723c?auto=format&fit=crop&w=400&q=80" alt="Mozaik">
+                    <h4>Cam Mozaik</h4>
+                    <p>Havuz ve duş içi kaplama.</p>
+                    <span class="badge">Dekoratif</span>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1621255395126-76cb402b8d00?auto=format&fit=crop&w=400&q=80" alt="Teras">
+                    <h4>Teras Seramiği</h4>
+                    <p>Kaymaz (Antislip) yüzey.</p>
+                    <span class="badge">Güvenli</span>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -337,42 +428,21 @@
             <p>Sektörün dev markaları Karpa güvencesiyle.</p>
         </div>
         <div class="brands-grid">
-            <div class="brand-box">
-                <img src="Firat_Boru_Logo.png" alt="FIRATBORU">
-            </div>
-            
-            <div class="brand-box">
-                <img src="http://kar-pa.com.tr/wp-content/uploads/2021/03/cArtboard-1.png" alt="Bien">
-            </div>
-            
-            <div class="brand-box">
-                <img src="http://kar-pa.com.tr/wp-content/uploads/2021/03/unnamed-8.png" alt="Kütahya Seramik">
-            </div>
-            
-            <div class="brand-box">
-                <img src="http://kar-pa.com.tr/wp-content/uploads/2021/03/kca23prb8tlf.png" alt="Ege Seramik">
-            </div>
-            
-            <div class="brand-box">
-                <img src="http://kar-pa.com.tr/wp-content/uploads/2021/03/Siyah-Logo-scaled-removebg-preview-200x74.png" alt="Kale">
-            </div>
-            
-            <div class="brand-box">
-                <img src="http://kar-pa.com.tr/wp-content/uploads/2021/03/logo.svg" alt="Seramiksan">
-            </div>
+            <div class="brand-box"><img src="Firat_Boru_Logo.png" alt="FIRAT"></div>
+            <div class="brand-box"><img src="creavit.png" alt="CREAVIT"></div>
+            <div class="brand-box"><img src="formina.png" alt="FORMINA"></div>
+            <div class="brand-box"><img src="pekdan.png" alt="PEKDAN"></div>
+            <div class="brand-box"><img src="newarc.png" alt="NEWARC"></div>
+            <div class="brand-box"><img src="http://kar-pa.com.tr/wp-content/uploads/2021/03/logo.svg" alt="DURA"></div>
         </div>
     </section>
 
-    <section id="hakkimizda" class="section-padding" style="background: var(--card-bg);">
+    <section id="hakkimizda" class="section-padding" style="background: var(--card-bg); backdrop-filter: blur(10px);">
         <div class="about-content">
             <div class="about-text">
                 <h3 style="color:var(--primary);">Eskişehir Karpa Hakkında</h3>
                 <h2 style="font-size:2rem; margin-bottom:20px; color:white;">Kaliteyi Zemine İşliyoruz</h2>
                 <p>Karpa Seramik olarak Eskişehir bölgesinde inşaat sektörünün güvenilir tedarikçisiyiz. 2000 m² kapalı depo alanı ve hızlı lojistik ağımız ile projelerinize değer katıyoruz.</p>
-                <ul style="color:#888; margin-top:20px;">
-                    <li style="margin-bottom:10px;"><i class="fas fa-check" style="color:var(--primary); margin-right:10px;"></i> Toptan Fiyatına Perakende</li>
-                    <li style="margin-bottom:10px;"><i class="fas fa-check" style="color:var(--primary); margin-right:10px;"></i> Mimari Danışmanlık</li>
-                </ul>
             </div>
             <div class="about-img">
                 <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Showroom">
@@ -387,15 +457,13 @@
         <div class="contact-container">
             <div class="contact-info">
                 <h3 style="color:white; margin-bottom:20px;">İletişim Bilgileri</h3>
-                <p style="color:#888; margin-bottom:10px;"><i class="fas fa-map-marker-alt" style="color:var(--primary); margin-right:10px;"></i> Organize Sanayi Bölgesi, 1. Cadde, Eskişehir</p>
-                <p style="color:#888; margin-bottom:10px;"><i class="fas fa-phone" style="color:var(--primary); margin-right:10px;"></i> +90 (222) 123 45 67</p>
-                <p style="color:#888;"><i class="fas fa-envelope" style="color:var(--primary); margin-right:10px;"></i> info@karpaseramik.com</p>
-                
+                <p style="color:#888; margin-bottom:10px;"><i class="fas fa-map-marker-alt" style="color:var(--primary); margin-right:10px;"></i> Hisar, 26550 Tepebaşı/Eskişehir</p>
+                <p style="color:#888; margin-bottom:10px;"><i class="fas fa-phone" style="color:var(--primary); margin-right:10px;"></i> +90 545 214 19 96</p>
+                <p style="color:#888;"><i class="fas fa-envelope" style="color:var(--primary); margin-right:10px;"></i> karpa@kar-pa.com.tr</p>
                 <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12273.80416973682!2d30.6558661!3d39.7828756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc3e66042105e9%3A0x9599d14619726056!2sEski%C5%9Fehir%20Organize%20Sanayi%20B%C3%B6lgesi%20M%C3%BCd%C3%BCrl%C3%BC%C4%9F%C3%BC!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str" allowfullscreen="" loading="lazy"></iframe>
+                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12273.80416973682!2d30.6558661!3d39.7828756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc3e66042105e9%3A0x9599d14619726056!2sEski%C5%9Fehir%20Organize%20Sanayi%20B%C3%B6lgesi%20M%C3%BCd%C3%BCrl%C3%BC%C4%9F%C3%BC!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
-
             <form class="contact-form">
                 <h3 style="color:white; margin-bottom:20px;">Fiyat Teklifi Alın</h3>
                 <input type="text" placeholder="Adınız Soyadınız">
@@ -412,6 +480,23 @@
     </footer>
 
     <script>
+        // --- KATEGORİ SİSTEMİ ---
+        function openCategory(categoryName, element) {
+            var products = document.getElementsByClassName("product-group");
+            for (var i = 0; i < products.length; i++) {
+                products[i].classList.remove("show");
+            }
+
+            var cards = document.getElementsByClassName("category-card");
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].classList.remove("active-cat");
+            }
+
+            document.getElementById(categoryName).classList.add("show");
+            element.classList.add("active-cat");
+        }
+
+        // --- MENÜ MARKER SİSTEMİ ---
         const marker = document.querySelector('#marker');
         const nav = document.querySelector('.navbar');
         const items = document.querySelectorAll('.nav-link');
@@ -419,9 +504,7 @@
         function indicator(el) {
             const navRect = nav.getBoundingClientRect();
             const elRect = el.getBoundingClientRect();
-            const relativeLeft = elRect.left - navRect.left;
-            
-            marker.style.left = relativeLeft + "px";
+            marker.style.left = (elRect.left - navRect.left) + "px";
             marker.style.width = elRect.width + "px";
         }
 
@@ -443,13 +526,6 @@
             const activeItem = document.querySelector('.nav-link.active');
             if(activeItem) setTimeout(() => indicator(activeItem), 100);
         });
-
-        window.addEventListener('resize', () => {
-            const activeItem = document.querySelector('.nav-link.active');
-            if(activeItem) indicator(activeItem);
-        });
     </script>
-
 </body>
-
 </html>
