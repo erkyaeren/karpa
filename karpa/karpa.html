@@ -20,6 +20,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
 
         body {
+           /* ...diğer kodlar... */
+           overflow-x: hidden; /* Sağa sola kaymayı engeller */
+        width: 100%; 
+            
+            
             background-color: transparent; 
             color: var(--text-light);
             line-height: 1.6;
@@ -169,49 +174,92 @@
 
         footer { background: rgba(0, 0, 0, 0.9); padding: 40px; text-align: center; color: #555; border-top: 1px solid #222; margin-top: 50px; backdrop-filter: blur(10px); }
 
-        /* --- MOBILE UYUMLULUK AYARLARI (KRİTİK GÜNCELLEME) --- */
+        /* --- MOBİL UYUMLULUK AYARLARI (GÜNCELLENDİ) --- */
         @media (max-width: 900px) {
             header { 
-                width: 100%; 
-                top: 0; 
-                padding: 10px; 
-                flex-direction: column; 
-                gap: 15px; 
-                border-radius: 0;
-                background: rgba(20, 20, 20, 0.95); /* Mobilde arka planı koyulaştırdım */
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                width: 95%; /* Kenarlarda hafif boşluk kalsın */
+                top: 15px; /* Üstten biraz boşluk */
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px 15px; 
+                flex-direction: column; /* Mobilde alt alta dizilim */
+                gap: 10px; 
+                border-radius: 25px; /* PC gibi yuvarlak köşeler */
+                
+                /* Mobilde de Glassmorphism (Buzlu Cam) olsun */
+                background: rgba(20, 20, 20, 0.85); 
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 5px 20px rgba(0,0,0,0.5);
             }
 
-            .logo { font-size: 22px; }
-
-            /* Menü Kaybolmasın, Yan Yana Kaydırılabilir Olsun */
+            .logo { 
+                font-size: 20px; /* Logo biraz küçülsün */
+                justify-content: center; /* Ortala */
+                width: 100%;
+            }
+            
+            /* Navbar'ı PC benzeri yatay ve sığacak şekilde ayarla */
             .navbar { 
                 display: flex; 
                 width: 100%; 
-                overflow-x: auto; /* Yana kaydırma açıldı */
-                padding-bottom: 5px; 
-                justify-content: flex-start;
+                overflow-x: auto; /* Sığmazsa yana kaydırılsın */
+                padding: 5px 0; 
+                justify-content: flex-start; /* Mobilde sola dayalı başlasın */
                 background: transparent;
+                /* Kaydırma çubuğunu gizlemek için */
+                -ms-overflow-style: none;  /* IE ve Edge */
+                scrollbar-width: none;  /* Firefox */
             }
-            .navbar::-webkit-scrollbar { display: none; } /* Scroll çubuğunu gizle */
+            
+            /* Chrome, Safari ve Opera için scrollbar gizleme */
+            .navbar::-webkit-scrollbar { 
+                display: none; 
+            }
 
-            .navbar ul { padding: 0 10px; }
-            .navbar ul li a { padding: 8px 15px; font-size: 13px; }
+            .navbar ul { 
+                padding: 0; 
+                display: flex; /* Yan yana diz */
+                flex-wrap: nowrap; /* Asla alt satıra geçmesin */
+                gap: 5px; /* Linkler arası boşluk */
+                margin: 0 auto; /* Eğer sığarsa ortala */
+            }
 
-            /* Arama kutusunu mobilde gizle (yer kaplamasın) */
+            .navbar ul li {
+                flex-shrink: 0; /* Küçülmesini engelle */
+            }
+
+            .navbar ul li a { 
+                padding: 6px 12px; /* Butonları küçült */
+                font-size: 12px; /* Yazıyı küçült */
+                white-space: nowrap; /* Yazı alt satıra geçmesin */
+                border-radius: 15px; /* Buton gibi olsun */
+                background: rgba(255,255,255,0.05); /* Hafif arka plan */
+            }
+            
+            /* Aktif link mobilde daha belirgin olsun */
+            .navbar ul li a.active {
+                background: var(--primary);
+                color: white;
+            }
+
+            /* Mobilde Marker (Turuncu kutu) yerine buton stili kullanıyoruz, marker'ı gizle */
+            #marker { display: none; }
+
+            /* Arama kutusunu mobilde gizle */
             .search-container { display: none; }
 
-            /* Yazı boyutlarını ve boşlukları küçült */
-            .hero h1 { font-size: 2.5rem; }
-            .section-padding { padding: 60px 5%; }
-            
+            /* Diğer Bölümlerin Mobil Ayarları */
+            .hero h1 { font-size: 2.2rem; }
+            .section-padding { padding: 50px 5%; }
             .category-grid { grid-template-columns: 1fr; } /* Kategoriler alt alta */
             .about-content, .contact-container { grid-template-columns: 1fr; }
-            
-            /* Ürünler mobilde 2'li olsun, çok büyük olmasın */
-            .product-group { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .product-item img { height: 140px; }
-            .product-item h4 { font-size: 1rem; }
+            .product-group { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* Ürünler 2'li */
+            .product-item img { height: 120px; }
+            .product-item h4 { font-size: 0.9rem; }
+            .footer-content { text-align: center; } /* Footer mobilde ortalansın */
+            .footer-col h4::after { left: 50%; transform: translateX(-50%); } /* Çizgiyi ortala */
         }
 
         /* --- SOSYAL MEDYA İKONLARI --- */
@@ -273,14 +321,14 @@
     <section id="koleksiyon" class="section-padding" style="background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);">
         <div class="section-title">
             <h2>Ürün <span>Gruplarımız</span></h2>
-            <p>Detaylı ürünleri görmek için kategorilere tıklayın.</p>
+            <p>Detaylı ürünleri görmek için kategorilere tıklayın.<br>ℹ️ÜRÜNLERİMİZDEN 8 TANE ÖRNEK VERİLMİŞTİR DAHA FAZLASI DEPOMUZDA MEVCUTTUR.</p>
         </div>
 
         <div class="category-grid">
-            <div class="category-card" onclick="openCategory('yapi', this)">
-                <i class="fas fa-tools"></i>
-                <h3>Yapı Malzemeleri</h3>
-                <p>İnşaat, yalıtım ve kimyasallar.</p>
+           <div class="category-card" onclick="openCategory('aksesuar', this)">
+              <i class="fas fa-soap"></i> 
+              <h3>Aksesuarlar</h3>
+              <p>Banyo setleri, havluluk ve detaylar.</p>
             </div>
             <div class="category-card" onclick="openCategory('banyo', this)">
                 <i class="fas fa-bath"></i>
@@ -296,156 +344,177 @@
 
         <div class="products-display-area">
             
-            <div id="yapi" class="product-group">
+            <div id="aksesuar" class="product-group">
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=400&q=80" alt="Derz">
-                    <h4>Derz Dolgu</h4>
-                    <p>Çatlamaz, su geçirmez.</p>
-                    <span class="badge">Stokta</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/648132.jpg" alt="Diş Fırçalık Altın">
+                    <h4>Diş Fırçalık Altın</h4>
+                    <p></p>
+                    <span class="badge">ALTIN RENK</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=400&q=80" alt="Yapıştırıcı">
-                    <h4>Seramik Yapıştırıcı</h4>
-                    <p>C2TE Sınıfı Güçlü Tutuş</p>
-                    <span class="badge">Profesyonel</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/698208-2.jpg" alt="Çöp Kovası Altın">
+                    <h4>Çöp Kovası Altın</h4>
+                    <p></p>
+                    <span class="badge">ALTIN RENK</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=400&q=80" alt="Yalıtım">
-                    <h4>Su Yalıtımı</h4>
-                    <p>Tam İzolasyon Çözümleri</p>
-                    <span class="badge">Su Bazlı</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/649211.jpg" alt="Askılık Bronz ">
+                    <h4>Askılık Bronz </h4>
+                    <p>– Bronze ikili askılık
+
+                        – Bronz</p>
+                    <span class="badge">BRONZ</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80" alt="Tamir">
-                    <h4>Tamir Harcı</h4>
-                    <p>Yüksek mukavemetli.</p>
-                    <span class="badge">Hızlı Donan</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/647313.jpg" alt="Etajer Altın">
+                    <h4>Etajer Altın</h4>
+                    <p></p>
+                    <span class="badge">ALTIN RENK</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1599694619087-013143c7b895?auto=format&fit=crop&w=400&q=80" alt="Silikon">
-                    <h4>Silikon Mastik</h4>
-                    <p>Küf tutmaz antibakteriyel.</p>
-                    <span class="badge">Çok Amaçlı</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/648102.jpg" alt="Halka Havluluk Altın">
+                    <h4>Halka Havluluk Altın</h4>
+                    <p></p>
+                    <span class="badge">ALTIN RENK</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=400&q=80" alt="Astar">
-                    <h4>Zemin Astarı</h4>
-                    <p>Yapışma artırıcı astar.</p>
-                    <span class="badge">İç/Dış Cephe</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/648212.jpg" alt="İkili Askılık Altın">
+                    <h4>İkili Askılık Altın</h4>
+                    <p></p>
+                    <span class="badge">ALTIN RENK</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1625834317364-b6a836dd1e92?auto=format&fit=crop&w=400&q=80" alt="Şap">
-                    <h4>Tesviye Şapı</h4>
-                    <p>Kendiliğinden yayılan.</p>
-                    <span class="badge">Pürüzsüz</span>
+                    <img src="https://www.newarc.com.tr/wp-content/uploads/2020/07/649161.jpg" alt="Sabunluk Bronz">
+                    <h4>Sabunluk Bronz</h4>
+                    <p>– Pera sabunluk
+
+                         – Bronz</p>
+                    <span class="badge">BRONZ</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&w=400&q=80" alt="Köpük">
-                    <h4>Mantolama Köpüğü</h4>
-                    <p>Isı yalıtım levhası.</p>
-                    <span class="badge">Isı Yalıtım</span>
+                    <img src="https://www.creavit.com.tr/media/cvqljjam/td10400-copy.jpg?format=webp&quality=100" alt="Kağıt Havluluk - Paslanmaz Çelik">
+                    <h4>Kağıt Havluluk - Paslanmaz Çelik</h4>
+                    <p>Not: Montaj sürecinde kesin ölçü gerektiğinde ürün üzerinden alınan birebir ölçüler kullanılmalıdır</p>
+                    <span class="badge">Paslanmaz</span>
                 </div>
             </div>
 
             <div id="banyo" class="product-group">
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80" alt="Lavabo">
-                    <h4>Çanak Lavabo</h4>
-                    <p>Tezgâh üstü modern seri.</p>
-                    <span class="badge">Yeni Sezon</span>
+                    <img src="https://www.formina.com.tr/uploads/dsn80-18tgqplzmh6r.jpg" alt="Özel Cam Desenli Duşakabin">
+                    <h4>Özel Cam Desenli Duşakabin</h4>
+                    <p>Kod: DSN80</p>
+                    <span class="badge">DESENLİ</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&w=400&q=80" alt="Batarya">
-                    <h4>Siyah Batarya</h4>
-                    <p>Mat siyah, leke tutmaz.</p>
-                    <span class="badge">Tasarruf</span>
+                    <img src="https://www.formina.com.tr/uploads/dsn83-iyd391avntsm.jpg" alt="Özel Cam Desenli Duşakabin">
+                    <h4>Özel Cam Desenli Duşakabin</h4>
+                    <p>Kod: DSN82</p>
+                    <span class="badge">DESENLİ</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=400&q=80" alt="Klozet">
-                    <h4>Asma Klozet</h4>
-                    <p>Kanalsız (Rimless) temizlik.</p>
-                    <span class="badge">Hijyenik</span>
+                    <img src="http://www.newarc.com.tr/wp-content/uploads/2025/11/bold-910538-mekan-2025-2.jpg" alt="Bold Bataryalı Duş Ünitesi ">
+                    <h4>Bold Bataryalı Duş Ünitesi </h4>
+                    <p>   – Mat Altın Özel PVD Kaplama
+
+                          – 4 Fonksiyonlu Bataryalı Duş Ünitesi
+
+                          – Özel Tasarım, Kullanışlı Volan
+
+                          – Şelale Akışlı Gaga Çıkışı
+
+                          – 120 mm Çapında, 3 Fonksiyonlu El Duşu
+
+                          – 250 mm Çapında, Yağmurlama Tepe Duşu
+
+                          – 2 Fonksiyonlu Shut-Off Sprey El Duşu
+
+                          – Özel PVC, Kir Tutmaz Mat Altın Hortumlar</p>
+                    <span class="badge">Bataryalı Duş Ünitesi</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1620626012053-93f2bc723386?auto=format&fit=crop&w=400&q=80" alt="Duşakabin">
-                    <h4>Duşakabin</h4>
-                    <p>Temperli cam, profil seçenekli.</p>
-                    <span class="badge">Ölçüye Özel</span>
+                    <img src="http://www.newarc.com.tr/wp-content/uploads/2020/07/470531B.jpg" alt="Corner Duvardan Ayarlı Duş Başlığı-Siyah ">
+                    <h4>Corner Duvardan Ayarlı Duş Başlığı-Siyah </h4>
+                    <p></p>
+                    <span class="badge">SİYAH</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=400&q=80" alt="Mutfak Eviyesi">
-                    <h4>Granit Eviye</h4>
-                    <p>Çizilmeye dayanıklı yüzey.</p>
-                    <span class="badge">Dayanıklı</span>
+                    <img src="https://www.creavit.com.tr/media/zoaknj5f/a-06-100.jpg?format=webp&quality=100" alt="Ankastre Su Çıkış ucu (şelale)">
+                    <h4>Ankastre Su Çıkış ucu (şelale)</h4>
+                    <p></p>
+                    <span class="badge">KROM</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=400&q=80" alt="Dolap">
-                    <h4>Banyo Dolabı</h4>
-                    <p>MDF Lam, suya dayanıklı.</p>
-                    <span class="badge">Ahşap/Beyaz</span>
+                    <img src="https://www.creavit.com.tr/media/n0vbzux3/a04-100.jpg?format=webp&quality=100" alt="Ankastre Su Çıkış Ucu (kare)">
+                    <h4>Ankastre Su Çıkış Ucu (kare)</h4>
+                    <p></p>
+                    <span class="badge">KROM</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1585128719715-46776b56a0d1?auto=format&fit=crop&w=400&q=80" alt="Havlu">
-                    <h4>Havlu Radyatör</h4>
-                    <p>Krom ve antrasit seçenekler.</p>
-                    <span class="badge">Isıtma</span>
+                    <img src="https://www.creavit.com.tr/media/331d4v4q/a09-100.jpg?format=webp&quality=100" alt="Ankastre Su Çıkışı Yönlend. Ucu (kare)">
+                    <h4>Ankastre Su Çıkışı Yönlend. Ucu (kare)</h4>
+                    <p></p>
+                    <span class="badge">KROM</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1618219944342-824e40a13285?auto=format&fit=crop&w=400&q=80" alt="Ayna">
-                    <h4>Ledli Ayna</h4>
-                    <p>Dokunmatik sensörlü.</p>
-                    <span class="badge">Aydınlatma</span>
+                    <img src="https://www.creavit.com.tr/media/lfag3tma/dsu2002-arkaduz-100.jpg?format=webp&quality=100" alt="Ankastre Duş Çift Su Çıkış Sıvaüstü Kare">
+                    <h4>Ankastre Duş Çift Su Çıkış Sıvaüstü Kare</h4>
+                    <p></p>
+                    <span class="badge">KROM</span>
                 </div>
             </div>
 
             <div id="seramik" class="product-group">
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=400&q=80" alt="60x120">
-                    <h4>60x120 Granit</h4>
-                    <p>Calacatta Mermer Deseni.</p>
-                    <span class="badge">Parlak</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x2/425VIOZ2.jpg" alt="Afel Night">
+                    <h4>Afel Night</h4>
+                    <p>Lüks algısını yediden yorumlayan Afel Porselen Karoları renk alternatifi ile yaratıcılığınızı özgürleştiriyor</p>
+                    <span class="badge">Full Lappato</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=400&q=80" alt="Ahşap">
-                    <h4>Parke Görünümlü</h4>
-                    <p>Ahşap sıcaklığı, seramik sağlamlığı.</p>
-                    <span class="badge">Mat</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x1/88S4H86H.jpg" alt="ALBEDO MAVİ">
+                    <h4>ALBEDO MAVİ</h4>
+                    <p>Mekanlara yeni bir hareket ve derinlik getiren Albedo Porselen Karoları, maximum konforu hedefliyor.</p>
+                    <span class="badge">Sırlı Porselen Karo</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" alt="Dekor">
-                    <h4>Dekoratif Duvar</h4>
-                    <p>3D Desenli Banyo Duvarı</p>
-                    <span class="badge">Rölyefli</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x1/96ZSUP9B.jpg" alt="ALBEDO Antrasit">
+                    <h4>ALBEDO Antrasit</h4>
+                    <p>Mekanlara yeni bir hareket ve derinlik getiren Albedo Porselen Karoları, maximum konforu hedefliyor.</p>
+                    <span class="badge">Sırlı Porselen Karo</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1615971677499-54678dd53f08?auto=format&fit=crop&w=400&q=80" alt="Antrasit">
-                    <h4>Beton Serisi</h4>
-                    <p>Endüstriyel gri tonlar.</p>
-                    <span class="badge">Modern</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x1/Y9TS2F1F.jpg" alt="ALBEDO Kahve">
+                    <h4>ALBEDO Kahve</h4>
+                    <p>Mekanlara yeni bir hareket ve derinlik getiren Albedo Porselen Karoları, maximum konforu hedefliyor..</p>
+                    <span class="badge">Sırlı Porselen Karo</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1596230529625-7ee541366572?auto=format&fit=crop&w=400&q=80" alt="Tezgah">
-                    <h4>Tezgah Arası</h4>
-                    <p>Küçük ebatlı metro seramik.</p>
-                    <span class="badge">Mutfak</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x2/RTG1SGA1.jpg" alt="ALPIN NATURA">
+                    <h4>ALPIN NATURA</h4>
+                    <p>Mermer deseninin kattığı dinamizm ve full lappato yüzey özelliğinin verdiği ışıltıyla Alpin Natura Porselen Karoları yaşam alanlarına ferahlık ve hareket katar.</p>
+                    <span class="badge">Full Lappato</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=400&q=80" alt="Dış Cephe">
-                    <h4>Dış Cephe</h4>
-                    <p>Dona dayanıklı porselen.</p>
-                    <span class="badge">Dış Mekan</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x2/60x12-aras-brown.jpg" alt="ARAS Kahve">
+                    <h4>ARAS Kahve</h4>
+                    <p>Mermerin göz alıcı görünümünü parlak yüzeyi ile daha da ön plana çıkaran Aras Serisinin kahve ve antrasit renk alternatifleriyle çekici, davetkar mekanlar yaratmanız çok kolay.
+
+</p>
+                    <span class="badge">Full Lappato</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1574738532395-5dbce292723c?auto=format&fit=crop&w=400&q=80" alt="Mozaik">
-                    <h4>Cam Mozaik</h4>
-                    <p>Havuz ve duş içi kaplama.</p>
-                    <span class="badge">Dekoratif</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x2/E8Y42Y0R.jpg" alt="Mozaik">
+                    <h4>ARAS Antrasit</h4>
+                    <p>Mermerin göz alıcı görünümünü parlak yüzeyi ile daha da ön plana çıkaran Aras Serisinin kahve ve antrasit renk alternatifleriyle çekici, davetkar mekanlar yaratmanız çok kolay.
+</p>
+                    <span class="badge">Full Lappato</span>
                 </div>
                 <div class="product-item">
-                    <img src="https://images.unsplash.com/photo-1621255395126-76cb402b8d00?auto=format&fit=crop&w=400&q=80" alt="Teras">
-                    <h4>Teras Seramiği</h4>
-                    <p>Kaymaz (Antislip) yüzey.</p>
-                    <span class="badge">Güvenli</span>
+                    <img src="https://www.duratiles.com.tr/img/urunler/x2/60x120-black-jack-f4.jpg" alt="Teras">
+                    <h4>BLACK JACK</h4>
+                    <p>Siyahın cazibesini mermerin ihtişamı ile daha da ön plana çıkaran Black Jack Serisi desenindeki hareketliliği mekanlara taşıyarak canlı, dinamik bir tasarım ortaya koyuyor.</p>
+                    <span class="badge">Full Lappato</span>
                 </div>
             </div>
 
@@ -488,7 +557,7 @@
             <div class="contact-info">
                 <h3 style="color:white; margin-bottom:20px;">İletişim Bilgileri</h3>
                 <p style="color:#888; margin-bottom:10px;"><i class="fas fa-map-marker-alt" style="color:var(--primary); margin-right:10px;"></i> Hisar, 26550 Tepebaşı/Eskişehir</p>
-                <p style="color:#888; margin-bottom:10px;"><i class="fas fa-phone" style="color:var(--primary); margin-right:10px;"></i> +90 545 214 19 96</p>
+                <p style="color:#888; margin-bottom:10px;"><i class="fas fa-phone" style="color:var(--primary); margin-right:10px;"></i> +90 544 546 83 92</p>
                 <p style="color:#888;"><i class="fas fa-envelope" style="color:var(--primary); margin-right:10px;"></i> karpa@kar-pa.com.tr</p>
                 <div class="map-container">
                      <iframe 
@@ -597,6 +666,63 @@
         }, 3000);
     }, 1500);
 }
+
+// --- GELİŞMİŞ ARAMA FONKSİYONU ---
+    const searchInput = document.querySelector('.search-box');
+    const allGroups = document.querySelectorAll('.product-group');
+    const allProducts = document.querySelectorAll('.product-item');
+
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase().trim(); // Yazılanı al ve küçük harfe çevir
+
+        // Eğer arama kutusu doluysa
+        if (searchTerm.length > 0) {
+            
+            // 1. Kullanıcıyı ürünler bölümüne kaydır (Telefonda kolaylık olsun diye)
+            if (window.scrollY < 300) {
+                document.getElementById('koleksiyon').scrollIntoView({behavior: "smooth"});
+            }
+
+            // 2. Tüm kategorileri (tabları) görünür yap ki hepsinde arayabilelim
+            allGroups.forEach(group => {
+                group.classList.add('show');
+                group.style.display = 'grid'; // Grid yapısını koru
+            });
+
+            // 3. Ürünleri tek tek kontrol et
+            allProducts.forEach(product => {
+                // Ürün başlığını ve açıklamasını al
+                const title = product.querySelector('h4').innerText.toLowerCase();
+                const desc = product.querySelector('p').innerText.toLowerCase();
+                const badge = product.querySelector('.badge').innerText.toLowerCase();
+
+                // Eşleşme var mı kontrol et
+                if (title.includes(searchTerm) || desc.includes(searchTerm) || badge.includes(searchTerm)) {
+                    product.style.display = 'block'; // Eşleşeni göster
+                } else {
+                    product.style.display = 'none'; // Eşleşmeyeni gizle
+                }
+            });
+
+        } else {
+            // --- ARAMA SİLİNDİĞİNDE ESKİ HALİNE DÖN ---
+            
+            // 1. Tüm ürünleri tekrar görünür yap (hafızada)
+            allProducts.forEach(product => {
+                product.style.display = 'block';
+            });
+
+            // 2. Tüm grupları gizle
+            allGroups.forEach(group => {
+                group.classList.remove('show');
+                group.style.display = ''; // CSS varsayılanına döndür
+            });
+
+            // 3. Varsayılan olarak ilk kategoriyi (Aksesuar) aç
+            // Bu, ekranın boş kalmamasını sağlar
+            document.querySelector('.category-card').click(); 
+        }
+    });
     </script>
 </body>
 </html>
